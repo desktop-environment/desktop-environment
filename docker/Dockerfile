@@ -166,27 +166,6 @@ RUN apt-get update -qq && \
   wget -O /etc/fonts/local.conf -nv https://raw.githubusercontent.com/jessfraz/dockerfiles/master/chrome/stable/local.conf && \
   groupadd --system chrome
 
-# Install cloudstorage
-RUN apt-get install -qq \
-  autoconf \
-  fuse3 \
-  libcurl4-openssl-dev \
-  libfuse3-dev \
-  libjsoncpp-dev \
-  libmicrohttpd-dev \
-  libtinyxml2-dev \
-  libtool \
-  pkg-config && \
-  git clone --depth 1 https://github.com/cloud-computer/libcloudstorage && \
-  cd libcloudstorage && \
-  ./bootstrap && \
-  ./configure --with-curl --with-microhttpd --with-fuse && \
-  make -j$(nproc) && \
-  make install && \
-  echo user_allow_other >> /etc/fuse.conf && \
-  mkdir -p $HOME/.config/cloudstorage && \
-  mkdir $HOME/cloudstorage
-
 # Install cmatrix
 RUN apt-get install -qq libncurses5-dev && \
   git clone --depth 1 https://github.com/abishekvashok/cmatrix && \
@@ -195,11 +174,6 @@ RUN apt-get install -qq libncurses5-dev && \
   cmake .. && \
   make && \
   make install
-
-# Install cool retro term
-RUN add-apt-repository ppa:vantuz/cool-retro-term && \
-  apt-get update -qq && \
-  apt-get install -qq cool-retro-term
 
 # Install ctop
 RUN wget https://github.com/bcicen/ctop/releases/download/v0.7.2/ctop-0.7.2-linux-amd64 -O /usr/local/bin/ctop && \
@@ -212,16 +186,6 @@ RUN wget -O /usr/local/bin/define -q https://github.com/Rican7/define/releases/d
 # Install desktop environment
 RUN git clone --depth 1 https://github.com/sabrehagen/desktop-environment.git /opt/desktop-environment
 
-# Install discord
-RUN wget -q -O discord.deb "https://discordapp.com/api/download?platform=linux&format=deb" && \
-  dpkg -i discord.deb || apt-get install -qq --fix-broken && \
-  rm discord.deb
-
-# Install dive docker image explorer
-RUN wget -q -O dive.deb https://github.com/wagoodman/dive/releases/download/v0.7.2/dive_0.7.2_linux_amd64.deb && \
-  dpkg -i dive.deb && \
-  rm dive.deb
-
 # Install docker-compose
 RUN curl -fsSL "https://github.com/docker/compose/releases/download/1.25.0-rc1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
   chmod +x /usr/local/bin/docker-compose
@@ -233,18 +197,9 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git $HOME/.fzf && \
 # Install gist
 RUN gem install gist
 
-# Install go
-RUN add-apt-repository ppa:longsleep/golang-backports && \
-  apt-get update -qq && \
-  apt-get install -qq golang-go
-
 # Install gotop
 RUN wget -q -O gotop-deb https://github.com/cjbassi/gotop/releases/download/3.0.0/gotop_3.0.0_linux_amd64.deb && \
   dpkg -i gotop-deb
-
-# Install gotty
-RUN curl -fsSL https://github.com/yudai/gotty/releases/download/v2.0.0-alpha.3/gotty_2.0.0-alpha.3_linux_amd64.tar.gz | \
-  tar -C /usr/local/bin -xzf -
 
 # Install i3
 RUN add-apt-repository ppa:kgilmer/speed-ricer && \
@@ -269,23 +224,6 @@ RUN wget -q -O jump.deb https://github.com/gsamokovarov/jump/releases/download/v
   dpkg -i jump.deb && \
   rm jump.deb
 
-# Install lazydocker
-RUN curl -fsSL https://github.com/jesseduffield/lazydocker/releases/download/v0.2.4/lazydocker_0.2.4_Linux_x86_64.tar.gz | \
-  tar -C /usr/local/bin -xzf -
-
-# Install lazygit
-RUN curl -fsSL https://github.com/jesseduffield/lazygit/releases/download/v0.8.1/lazygit_0.8.1_Linux_x86_64.tar.gz | \
-  tar -C /usr/local/bin -xzf -
-
-# Intall microsoft teams
-RUN wget -O MsTeams.deb https://packages.microsoft.com/repos/ms-teams/pool/main/t/teams/teams_1.3.00.5153_amd64.deb && \
-    apt install ./MsTeams.deb -q -y
-
-# Install musikcube
-RUN wget -O musikcube.deb -nv https://github.com/clangen/musikcube/releases/download/0.90.0/musikcube_0.90.0_ubuntu_disco_amd64.deb && \
-  dpkg -i musikcube.deb || apt-get install -qq --fix-broken && \
-  rm musikcube.deb
-
 # Install nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash -
 
@@ -293,37 +231,12 @@ RUN curl -fsSL https://deb.nodesource.com/setup_12.x | bash -
 RUN git clone --depth 1 https://github.com/cloud-computer/noVNC.git /opt/noVNC && \
   git clone https://github.com/novnc/websockify /opt/noVNC/utils/websockify
 
-# Install onedrive client
-RUN wget -O /usr/local/bin/onedrive -nv https://github.com/sabrehagen/onedrive/raw/master/onedrive && \
-  chmod +x /usr/local/bin/onedrive
-
 # Install pulseaudio mixer
 RUN wget -O /usr/local/bin/pulsemixer -nv https://raw.githubusercontent.com/GeorgeFilipkin/pulsemixer/master/pulsemixer && \
   chmod +x /usr/local/bin/pulsemixer
 
 # Install pywal
 RUN pip3 install --user pywal
-
-# Install resucetime time tracker
-RUN wget -O rescuetime.deb -nv https://www.rescuetime.com/installers/rescuetime_current_amd64.deb && \
-  dpkg -i rescuetime.deb || apt-get install -qq --fix-broken && \
-  rm rescuetime.deb
-
-# Install signal messenger
-RUN curl -fsSL https://updates.signal.org/desktop/apt/keys.asc | apt-key add - && \
-  echo "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main" | tee -a /etc/apt/sources.list.d/signal-xenial.list && \
-  apt-get update -qq && \
-  apt-get install -qq signal-desktop
-
-# Install skype
-RUN wget -O skype.deb -q https://go.skype.com/skypeforlinux-64.deb && \
-  dpkg -i skype.deb && \
-  rm skype.deb
-
-# Install slack
-RUN wget -O slack.deb -nv https://downloads.slack-edge.com/linux_releases/slack-desktop-4.9.1-amd64.deb && \
-  dpkg -i slack.deb || apt-get install -qq --fix-broken && \
-  rm slack.deb
 
 # Install speedtest
 RUN pip install --user speedtest-cli
@@ -386,11 +299,6 @@ RUN yarn global add \
   rebase-editor \
   tldr && \
   tldr --update
-
-# Install zoom conferencing
-RUN wget -O zoom.deb -nv https://zoom.us/client/latest/zoom_amd64.deb && \
-  dpkg -i zoom.deb || apt-get install -qq --fix-broken && \
-  rm zoom.deb
 
 # Configure openvpn
 RUN mkdir -p $HOME/.config/openvpn && \
