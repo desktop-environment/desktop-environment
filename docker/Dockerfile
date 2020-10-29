@@ -25,7 +25,7 @@ RUN yes | unminimize
 
 # Install locales and timezone data
 RUN apt-get update -qq && \
-  apt-get install -qq \
+  apt-get install -y \
   locales \
   tzdata
 
@@ -40,7 +40,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
 
 # Install desktop environment utilities
 RUN apt-get update -qq && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq --fix-missing \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-missing \
   alsa-utils \
   apt-file \
   apt-utils \
@@ -145,7 +145,7 @@ RUN wget -O bat.deb -q https://github.com/sharkdp/bat/releases/download/v0.9.0/b
 
 # Install chrome
 RUN apt-get update -qq && \
-  apt-get install -qq \
+  apt-get install -y \
   apt-transport-https \
   ca-certificates \
   gnupg \
@@ -161,13 +161,13 @@ RUN apt-get update -qq && \
   curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - && \
   echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google.list && \
   apt-get update -qq && \
-  apt-get install -qq google-chrome-stable --no-install-recommends && \
+  apt-get install -y google-chrome-stable --no-install-recommends && \
   rm /etc/apt/sources.list.d/google.list && \
   wget -O /etc/fonts/local.conf -nv https://raw.githubusercontent.com/jessfraz/dockerfiles/master/chrome/stable/local.conf && \
   groupadd --system chrome
 
 # Install cmatrix
-RUN apt-get install -qq libncurses5-dev && \
+RUN apt-get install -y libncurses5-dev && \
   git clone --depth 1 https://github.com/abishekvashok/cmatrix && \
   mkdir -p cmatrix/build && \
   cd cmatrix/build && \
@@ -204,7 +204,7 @@ RUN wget -q -O gotop-deb https://github.com/cjbassi/gotop/releases/download/3.0.
 # Install i3
 RUN add-apt-repository ppa:kgilmer/speed-ricer && \
   apt-get update -qq && \
-  apt-get install -qq i3blocks i3-gaps i3lock-fancy && \
+  apt-get install -y i3blocks i3-gaps i3lock-fancy && \
   sed -i 's/TEXT=".*"/TEXT=""/' /usr/bin/i3lock-fancy && \
   sed -i 's/rm -f "$IMAGE"//' /usr/bin/i3lock-fancy && \
   wget -q -O /usr/share/i3lock-fancy/lock.png http://png-pixel.com/1x1-00000000.png && \
@@ -216,7 +216,7 @@ RUN add-apt-repository ppa:kgilmer/speed-ricer && \
 
 # Install jobber
 RUN wget -O jobber.deb -q https://github.com/dshearer/jobber/releases/download/v1.4.0/jobber_1.4.0-1_amd64.deb && \
-  dpkg -i jobber.deb || apt-get install -qq --fix-broken && \
+  dpkg -i jobber.deb || apt-get install -y --fix-broken && \
   rm jobber.deb
 
 # Install jump directory navigator
@@ -254,21 +254,21 @@ RUN gem install tmuxinator -v 1.1.5
 
 # Install vs code, vs live share dependencies, shfmt extension dependency, and vs-wal
 RUN wget -O code.deb -nv https://go.microsoft.com/fwlink/?LinkID=760868 && \
-  apt-get install -qq ./code.deb && \
+  apt-get install -y ./code.deb && \
   rm code.deb && \
-  apt-get install -qq libicu[0-9][0-9] libkrb5-3 zlib1g libsecret-1-0 desktop-file-utils x11-utils && \
+  apt-get install -y libicu[0-9][0-9] libkrb5-3 zlib1g libsecret-1-0 desktop-file-utils x11-utils && \
   wget -O /usr/local/bin/shfmt -nv https://github.com/mvdan/sh/releases/download/v2.6.3/shfmt_v2.6.3_linux_amd64 && \
   chmod +x /usr/local/bin/shfmt
 
 # Install warnai
 RUN apt-get update -qq && \
-  apt-get install -qq inkscape optipng xfconf && \
+  apt-get install -y inkscape optipng xfconf && \
   git clone --depth 1 https://github.com/reorr/warnai /opt/warnai && \
   sed -i '/notify-send/d' /opt/warnai/warnai
 
 # Install xava
 RUN apt-get update -qq && \
-  apt-get install -qq \
+  apt-get install -y \
   libfftw3-dev \
   libasound2-dev \
   libpulse-dev \
@@ -286,7 +286,7 @@ RUN apt-get update -qq && \
 RUN curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
   echo "deb https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list && \
   apt-get update -qq && \
-  apt-get install -qq yarn
+  apt-get install -y yarn
 
 # Install yarn based utilities
 RUN yarn global add \
