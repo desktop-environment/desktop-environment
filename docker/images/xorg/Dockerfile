@@ -1,16 +1,10 @@
 ARG DESKTOP_ENVIRONMENT_BASE
 FROM $DESKTOP_ENVIRONMENT_BASE:latest
 
-ARG DESKTOP_ENVIRONMENT_HOST_TTY
-ENV DESKTOP_ENVIRONMENT_HOST_TTY $DESKTOP_ENVIRONMENT_HOST_TTY
-
 # Install x11
 RUN sudo apt-get update -qq && \
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq --fix-missing \
-  xinit \
-  xorg \
-  xsel \
-  xserver-xorg
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -qq \
+  xorg
 
 # Configure x11
 RUN sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapper.config && \
@@ -19,4 +13,4 @@ RUN sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/X11/Xwrapp
   echo sleep infinity > ~/.xinitrc
 
 # Start x11
-CMD xinit -- $DISPLAY vt0$DESKTOP_ENVIRONMENT_HOST_TTY
+ENTRYPOINT ["xinit", "--"]

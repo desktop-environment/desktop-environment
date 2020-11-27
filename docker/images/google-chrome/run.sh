@@ -4,7 +4,7 @@ IMAGE=$(basename $(dirname $0))
 # Export desktop environment shell configuration
 eval "$($REPO_ROOT/docker/scripts/environment.sh)"
 
-# Start the desktop environment container
+# Start the google chrome container
 docker run \
   --detach \
   --env DISPLAY \

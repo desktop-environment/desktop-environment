@@ -15,6 +15,7 @@ RUN sudo add-apt-repository ppa:kgilmer/speed-ricer && \
 
 # Install i3 utilities
 RUN sudo apt-get install -qq \
+  feh \
   golang-go \
   xautolock && \
   pip3 install --user i3-resurrect==1.4.2 && \
@@ -68,4 +69,4 @@ RUN sudo apt-get update -qq && \
   sed -i '/notify-send/d' /opt/warnai/warnai
 
 # Start i3
-CMD i3
+CMD zsh -c i3

@@ -23,4 +23,4 @@ RUN sudo apt-get install -qq \
   mkdir $HOME/cloudstorage
 
 # Start cloudstorage
-ENTRYPOINT cloudstorage-fuse
+ENTRYPOINT ["cloudstorage-fuse"]

@@ -4,6 +4,7 @@ IMAGE=$(basename $(dirname $0))
 # Export desktop environment shell configuration
 eval "$($REPO_ROOT/docker/scripts/environment.sh)"
 
+# Start the tiger vnc server container
 docker run \
   --detach \
   --env DISPLAY=${DISPLAY-:1} \

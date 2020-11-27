@@ -15,4 +15,4 @@ RUN sudo apt-get update -qq && \
   cargo install --git https://github.com/alacritty/alacritty --tag v0.5.0
 
 # Run alacritty
-ENTRYPOINT alacritty
+ENTRYPOINT ["alacritty"]

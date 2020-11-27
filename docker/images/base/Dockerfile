@@ -81,6 +81,7 @@ RUN apt-get update -qq && \
   tigervnc-standalone-server \
   tmux \
   tree \
+  unzip \
   vcsh \
   wmctrl \
   x11-xkb-utils \
@@ -124,6 +125,12 @@ RUN wget -q -O jump.deb https://github.com/gsamokovarov/jump/releases/download/v
   dpkg -i jump.deb && \
   rm jump.deb
 
+# Install nerd fonts
+RUN curl -fsSL https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/DroidSansMono.zip --create-dirs -o ~/.local/share/fonts/DroidSansMono.zip && \
+  unzip ~/.local/share/fonts/DroidSansMono.zip -d ~/.local/share/fonts && \
+  rm ~/.local/share/fonts/DroidSansMono.zip && \
+  fc-cache -fv
+
 # Install timeago
 RUN wget -q -O /usr/local/bin/timeago -nv https://raw.githubusercontent.com/sabrehagen/timeago/master/timeago && \
   chmod +x /usr/local/bin/timeago
@@ -145,7 +152,7 @@ RUN yarn global add \
   rebase-editor
 
 # Create a non-root user for safe operation
-RUN groupadd input && \
+RUN groupadd --system input && \
   useradd \
   --create-home \
   --groups audio,docker,input,shadow,sudo,tty,video \
@@ -182,7 +189,8 @@ RUN git clone git://github.com/$DESKTOP_ENVIRONMENT_GITHUB_USER/desktop-environm
   sudo ln -s /opt/desktop-environment/docker/scripts/run.sh /usr/local/bin/docker_run
 
 # Clone user dotfiles or fallback to sabrehagen dotfiles
-RUN vcsh clone git://github.com/$DESKTOP_ENVIRONMENT_GITHUB_USER/dotfiles.git || \
+RUN wget https://github.com/$DESKTOP_ENVIRONMENT_GITHUB_USER/dotfiles.git --no-check-certificate -o /dev/null && \
+  vcsh clone git://github.com/$DESKTOP_ENVIRONMENT_GITHUB_USER/dotfiles.git || \
   vcsh clone https://github.com/sabrehagen/dotfiles.git
 
 # Bootstrap dotfiles

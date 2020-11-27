@@ -4,7 +4,7 @@ IMAGE=$(basename $(dirname $0))
 # Export desktop environment shell configuration
 eval "$($REPO_ROOT/docker/scripts/environment.sh)"
 
-# Start the desktop environment container
+# Start the alacritty container
 docker run \
   --cap-add NET_ADMIN \
   --cap-add SYS_ADMIN \
@@ -13,8 +13,6 @@ docker run \
   --detach \
   --device /dev/fuse \
   --device /dev/snd \
-  --device /dev/tty$DESKTOP_ENVIRONMENT_HOST_TTY \
-  --env DESKTOP_ENVIRONMENT_HOST_HOSTNAME \
   --env DISPLAY \
   --group-add audio \
   --group-add docker \

@@ -4,6 +4,7 @@ IMAGE=$(basename $(dirname $0))
 # Export desktop environment shell configuration
 eval "$($REPO_ROOT/docker/scripts/environment.sh)"
 
+# Start the x11 container
 docker run \
   --cap-add SYS_ADMIN \
   --cap-add SYS_TTY_CONFIG \
@@ -13,7 +14,6 @@ docker run \
   --device /dev/snd \
   --device /dev/tty$DESKTOP_ENVIRONMENT_HOST_TTY \
   --device /dev/video0 \
-  --env DESKTOP_ENVIRONMENT_HOST_TTY \
   --env DISPLAY=${DISPLAY-:1} \
   --group-add audio \
   --group-add input \
@@ -29,4 +29,5 @@ docker run \
   --volume /run/udev:/run/udev \
   --volume DESKTOP_ENVIRONMENT_STATE_TMUX:$DESKTOP_ENVIRONMENT_STATE_TMUX \
   --volume DESKTOP_ENVIRONMENT_STATE_X11:$DESKTOP_ENVIRONMENT_STATE_X11 \
-  $DESKTOP_ENVIRONMENT_REGISTRY/$DESKTOP_ENVIRONMENT_CONTAINER_IMAGE-$IMAGE:$DESKTOP_ENVIRONMENT_CONTAINER_TAG
+  $DESKTOP_ENVIRONMENT_REGISTRY/$DESKTOP_ENVIRONMENT_CONTAINER_IMAGE-$IMAGE:$DESKTOP_ENVIRONMENT_CONTAINER_TAG \
+  $@

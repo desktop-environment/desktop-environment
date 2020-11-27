@@ -25,3 +25,6 @@ RUN echo sleep infinity >> /tmp/xstartup && \
   code && sleep 5 && pkill -f code && \
   ~/.config/scripts/wal.sh && \
   kill -HUP $(pgrep Xtigervnc) && sleep 2
+
+# Start code
+ENTRYPOINT ["code"]
